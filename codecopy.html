@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /*------------------ copy code css start------------------------  */
+.copy-container {
+    width: 100%;
+    margin: 20px auto;
+    background-color: #201f1f;
+    padding: 1vw 0.7vw;
+    border-radius: 5px;
+    position: relative;
+    color: #f92672;
+    font-size: 16px;
+    font-weight: 300;
+}
+
+.copyButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 60px;
+    height: 30px;
+    border: none;
+    background: #4CAF50;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.copyMessage {
+    color: #4CAF50;
+    display: none;
+}
+
+.contentToCopy {
+    position: relative;
+    overflow-x: auto;
+}
+    </style>
+</head>
+
+<body>
+    <div class="contentToCopy copy-container">
+        <button class="copyButton">Copy</button>
+        <span class="copyMessage"></span>
+        <pre>
+               <code>&lt;ul&gt;</code>
+        </pre>
+    </div>
+
+
+    <script>
+        var copyButtons = document.querySelectorAll(".copyButton");
+copyButtons.forEach(function (button) {
+  button.addEventListener("click", function () {
+    copyContent(button);
+  });
+});
+
+function copyContent(clickedButton) {
+  var container = clickedButton.closest(".contentToCopy");
+  if (!container) return;
+
+  var copyButton = container.querySelector(".copyButton");
+  var copyMessage = container.querySelector(".copyMessage");
+
+  var tempContainer = document.createElement("div");
+
+  var contentClone = container.cloneNode(true);
+  var buttonToRemove = contentClone.querySelector(".copyButton");
+  if (buttonToRemove) {
+    contentClone.removeChild(buttonToRemove);
+  }
+
+  tempContainer.appendChild(contentClone);
+
+  var tempTextarea = document.createElement("textarea");
+  tempTextarea.value = tempContainer.textContent;
+
+  document.body.appendChild(tempTextarea);
+
+  tempTextarea.select();
+  tempTextarea.setSelectionRange(0, 99999); 
+
+  document.execCommand("copy");
+F
+  document.body.removeChild(tempTextarea);
+
+  // Show the "Copied" message inside the button
+  copyButton.textContent = "Copied";
+  copyMessage.textContent = "!";
+  copyMessage.style.display = "absolute";
+
+  // Hide the message and revert button text after 2 seconds
+  setTimeout(function () {
+    copyButton.textContent = "Copy";
+    copyMessage.textContent = "";
+    copyMessage.style.display = "none";
+  }, 2000);
+}
+
+    </script>
+</body>
+
+</html>
